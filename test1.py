@@ -6,13 +6,6 @@ import time
 # 要爬的股票
 stock = ["1101", "2330", "1102"]
 
-# Telegram Bot Token
-token = "輸入你的 bot token"
-
-# Telegram Chat ID
-chat_id = "輸入你的 telegram id"
-
-# 迴圈依序爬股價
 for i in range(len(stock)):
 
     # 現在處理的股票
@@ -28,35 +21,37 @@ for i in range(len(stock)):
     soup = BeautifulSoup(r.text, "html.parser")
 
     # 定位股價
-    price_tag = soup.find(
+    price = soup.find(
         "span",
-        class_=[
-            "Fz(32px) Fw(b) Lh(1) Mend(16px) D(f) Ai(c) C($c-trend-down)",
-            "Fz(32px) Fw(b) Lh(1) Mend(16px) D(f) Ai(c)",
-            "Fz(32px) Fw(b) Lh(1) Mend(16px) D(f) Ai(c) C($c-trend-up)"
-        ]
+        class_="Fz(32px) Fw(b) Lh(1) Mend(16px) D(f) Ai(c)"
     )
 
-    # 如果有找到股價
-    if price_tag:
-
-        price = price_tag.getText()
-
-        # 回報的訊息
-        message = "股票 " + stockid + " 即時股價為 " + price
-
-        # Telegram Bot 送訊息
-        telegram_url = (
-            f"https://api.telegram.org/bot{token}/sendMessage"
-            f"?chat_id={chat_id}&text={message}"
-        )
-
-        requests.get(telegram_url)
-
-        print(message)
-
-    else:
+    # 如果找不到股價
+    if price is None:
         print("找不到股票 " + stockid + " 的股價")
+        continue
+
+    # 取得文字
+    price = price.get_text(strip=True)
+
+    # 回報的訊息
+    message = "股票 " + stockid + " 即時股價為 " + price
+
+    # bot token
+    token = "你的 bot token"
+
+    # 使用者 id
+    chat_id = "你的 telegram id"
+
+    # bot 送訊息
+    telegram_url = (
+        f"https://api.telegram.org/bot{token}/sendMessage"
+        f"?chat_id={chat_id}&text={message}"
+    )
+
+    requests.get(telegram_url)
+
+    print(message)
 
     # 每次停 3 秒
     time.sleep(3)
