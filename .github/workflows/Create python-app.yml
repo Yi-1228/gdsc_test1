@@ -2,8 +2,7 @@ name: get stock price
 
 on:
   schedule:
-    - cron: '*/5 * * * 1-5'
-  workflow_dispatch:
+    - cron: "*/5 * * * 1-5"
 
 jobs:
   build:
@@ -16,12 +15,14 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.9"
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install requests
 
-      - name: Run Python script
-        run: python test1.py
+      - name: Run Python
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          python test1.py
