@@ -29,7 +29,7 @@ rain_probability = data["daily"]["precipitation_probability_max"][0]
 print(f"今天降雨機率：{rain_probability}%")
 
 # 判斷是否超過 70%
-if rain_probability > 70:
+if rain_probability > 30:
 
     message = f"☔ 今天降雨機率 {rain_probability}%，記得帶傘喔！"
 
