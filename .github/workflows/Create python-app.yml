@@ -2,7 +2,9 @@ name: get stock price
 
 on:
   schedule:
-    - cron: "*/5 * * * 1-5"
+    - cron: '*/5 * * * 1-5'
+
+  workflow_dispatch:
 
 jobs:
   build:
@@ -15,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.9"
+          python-version: '3.9'
 
       - name: Install dependencies
         run: |
@@ -25,5 +27,3 @@ jobs:
 
       - name: Run Python script
         run: python test1.py
-
-
